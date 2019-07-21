@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name"> </string>
+    <string name="api_key">api키값입력해주세요</string>
+    <string name="logout">로그아웃</string>
+    <string name="history_of_use_remove">사용기록삭제</string>
+    <string name="about_real_time_locations">실시간 위치정보</string>
+    <string name="other_settings">기타설정</string>
+    <string name="nick_name">나만 믿어 님</string>
+    <string name="finding_a_way">길찾기</string>
+    <string name="book_mark">즐겨찾기</string>
+    <string name="register_contacts">연락처 등록</string>
+    <string name="notice">공지사항</string>
+    <string name="faq">FAQ</string>
+    <string name="font_size">글자 크기</string>
+    <string name="message_content">메시지 내용 수정</string>
+    <string name="long_touch">롱터치 시간 설정</string>
+    <string name="app_version_info">버전 정보</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="starting_point">출발지</string>
+    <string name="destination">도착지</string>
+</resources>

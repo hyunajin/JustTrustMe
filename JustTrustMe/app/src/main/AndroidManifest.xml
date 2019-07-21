@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.asus.justtrustme">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="com.kakao.sdk.Appkey"
+            android:value="@string/api_key"/>
+
+        <activity android:name=".KakaoLogin">
+
+        </activity>
+        <activity android:name=".GoogleLoign">
+
+        </activity>
+        <activity android:name=".FindingWay" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".BookMark" />
+        <activity android:name=".RegisterContacts" />
+        <activity android:name=".OtherSettings" />
+        <activity android:name=".Notice" />
+        <activity android:name=".FAQ" />
+        <activity android:name=".Home" />
+        <activity android:name=".Search"/>
+    </application>
+
+</manifest>
