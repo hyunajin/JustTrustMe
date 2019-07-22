@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">TrustMe</string>
+    <string name="title_activity_kakao_login">KakaoLogin</string>
+    <string name="kakao_app_key">4dc184620e7dc3c25d9c9ce7ada759b5</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
