@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:cardview="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        cardview:cardCornerRadius="10dp"
+        android:layout_height="70dp"
+        android:id="@+id/contacts_cardView">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:padding="10dp">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:scaleType="fitCenter"
+                android:layout_marginRight="5dp"
+                android:src="@drawable/phonebook" />
+
+            <TextView
+                android:text="No."
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/contacts_Id"
+                android:layout_weight="1" />
+
+            <TextView
+                android:text="Name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/contacts_Name"
+                android:layout_weight="4" />
+
+            <TextView
+                android:text="000-0000-0000"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/contacts_Tel"
+                android:layout_weight="7" />
+
+            <ImageButton
+                android:layout_height="20dp"
+                android:id="@+id/btnCancel"
+                android:background="@drawable/cancel"
+                android:scaleType="fitCenter"
+                android:layout_width="20dp" />
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>
