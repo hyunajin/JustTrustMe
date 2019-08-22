@@ -63,16 +63,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Holder
             btnCancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        if (context.checkSelfPermission(Manifest.permission.CALL_PHONE)
-                                == PackageManager.PERMISSION_GRANTED) {
-                            Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + contacts_Tel.getText().toString()));
-                            context.startActivity(intent);
-                        }
-                    } else {
-                        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + contacts_Tel.getText().toString()));
-                        context.startActivity(intent);
-                    }
                 }
             });
 
