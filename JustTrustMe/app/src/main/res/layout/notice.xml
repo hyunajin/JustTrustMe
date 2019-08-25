@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/noticeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#E0B650"
+            android:gravity="center_horizontal"
+            android:lineSpacingExtra="4sp"
+            android:text="공지사항"
+            android:textColor="#000000"
+            android:textSize="25sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#E0B650">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="김현준"
+            android:layout_gravity="center"
+            android:padding="3dp"
+            android:layout_marginLeft="8dp"
+            android:textColor="#000000"
+            android:textColorHint="#000000"
+            android:id="@+id/nameText"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="2019.07.10"
+            android:layout_gravity="center"
+            android:padding="3dp"
+            android:layout_marginLeft="8dp"
+            android:textColor="#000000"
+            android:textColorHint="#000000"
+            android:id="@+id/dateText"/>
+    </LinearLayout>
+
+</LinearLayout>

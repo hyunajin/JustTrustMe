@@ -13,9 +13,9 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="400dp"
-            android:orientation="vertical"
-            android:background="#000000">
+            android:layout_height="317dp"
+            android:background="#000000"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/textView"
@@ -30,7 +30,7 @@
 
             <ImageView
                 android:layout_width="400dp"
-                android:layout_height="250dp"
+                android:layout_height="171dp"
                 android:layout_gravity="center"
                 android:layout_margin="30dp"
                 android:src="@drawable/logo" />
@@ -39,31 +39,24 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:background="#000000">
+            android:background="#000000"
+            android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="250dp"
-                android:layout_height="50dp"
+                android:layout_width="260dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="50dp"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/google_logo" />
 
-                <Button
+                <com.google.android.gms.common.SignInButton
                     android:id="@+id/button1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/nanumgodicb"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
                     android:text="구글 로그인"
-                    android:textColor="#000000"
-                    android:textSize="18sp"
-                    android:background="@drawable/buttonshape"/>
+                    android:visibility="visible"
+                    tools:visibility="visible" />
 
             </LinearLayout>
 
@@ -72,27 +65,45 @@
                 android:layout_height="50dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="25dp"
+                android:background="#FFEB3B"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="50dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/kakao" />
+                    android:orientation="horizontal">
 
-                <Button
+                    <ImageView
+                        android:id="@+id/imageView3"
+                        android:layout_width="50dp"
+                        android:layout_height="60dp"
+                        android:layout_gravity="left"
+                        app:srcCompat="@drawable/kakao" />
+
+                    <Button
+                        android:id="@+id/btn_custom_login"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:background="@drawable/buttonshape_1"
+                        android:fontFamily="@font/nanumgodicb"
+                        android:text="카카오 로그인"
+                        android:textColor="#000000"
+                        android:textSize="18sp" />
+                </LinearLayout>
+
+                <com.kakao.usermgmt.LoginButton
                     android:id="@+id/button2"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/nanumgodicb"
-                    android:text="카카오 로그인"
-                    android:textColor="#000000"
-                    android:textSize="18sp"
-                    android:background="@drawable/buttonshape_1"/>
+                    android:visibility="gone">
+
+
+                </com.kakao.usermgmt.LoginButton>
 
             </LinearLayout>
 
         </LinearLayout>
 
     </LinearLayout>
+
 </LinearLayout>

@@ -4,12 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="공지사항 페이지입니다."
-        android:textColor="@android:color/white"
-        android:layout_marginTop="60dp"/>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -47,4 +41,19 @@
         app:headerLayout="@layout/nav_header_main"
         app:menu="@menu/nav_bottom_main">
     </android.support.design.widget.NavigationView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <ListView
+            android:id="@+id/noticeListView"
+            android:layout_width="match_parent"
+            android:layout_height="617dp"
+            android:layout_margin="10dp"
+            android:divider="#ffffff"
+            android:dividerHeight="10dp" />
+    </LinearLayout>
 </android.support.v4.widget.DrawerLayout>
