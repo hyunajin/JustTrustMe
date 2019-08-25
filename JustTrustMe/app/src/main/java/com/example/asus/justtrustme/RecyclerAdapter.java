@@ -63,10 +63,15 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Holder
             btnCancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    removeAt(getAdapterPosition());
                 }
             });
 
         }
     }
+    public void removeAt(int position){
+        datas.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, datas.size());
+    }
 }
-
