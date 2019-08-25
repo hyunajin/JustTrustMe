@@ -34,7 +34,7 @@
         <activity android:name=".BookMark" />
         <activity android:name=".RegisterContacts" />
         <activity android:name=".OtherSettings" />
-        <activity android:name=".Notice" />
+        <activity android:name=".NoticeActivity" />
         <activity android:name=".FAQ" />
         <activity android:name=".Home" />
         <activity android:name=".Search"/>
