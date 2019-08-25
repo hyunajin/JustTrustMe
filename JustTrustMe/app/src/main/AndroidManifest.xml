@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
 
     <application
         android:allowBackup="true"
@@ -13,18 +15,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ButtonActivity"></activity>
 
         <meta-data
             android:name="com.kakao.sdk.Appkey"
-            android:value="7b16bf536b619a3a2bcee88f81106c7d"/>
+            android:value="7b16bf536b619a3a2bcee88f81106c7d" />
 
-        <activity android:name=".KakaoLogin">
-
-        </activity>
-        <activity android:name=".GoogleLoign">
-
-        </activity>
-        <activity android:name=".FindingWay" >
+        <activity android:name=".KakaoLogin"></activity>
+        <activity android:name=".GoogleLoign"></activity>
+        <activity android:name=".FindingWay">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -37,7 +36,7 @@
         <activity android:name=".NoticeActivity" />
         <activity android:name=".FAQ" />
         <activity android:name=".Home" />
-        <activity android:name=".Search"/>
+        <activity android:name=".Search" />
     </application>
 
 </manifest>
