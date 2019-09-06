@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.asus.justtrustme">
 
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -16,7 +18,7 @@
 
         <meta-data
             android:name="com.kakao.sdk.Appkey"
-            android:value="@string/api_key"/>
+            android:value="ac957fa44214b0365e6fb54ed8779d83"/>
 
         <activity android:name=".KakaoLogin">
 
@@ -34,8 +36,8 @@
         <activity android:name=".BookMark" />
         <activity android:name=".RegisterContacts" />
         <activity android:name=".OtherSettings" />
+        <activity android:name=".FAQ"/>
         <activity android:name=".Notice" />
-        <activity android:name=".FAQ" />
         <activity android:name=".Home" />
         <activity android:name=".Search"/>
     </application>
