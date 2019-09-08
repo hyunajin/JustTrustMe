@@ -28,7 +28,7 @@
                 android:src="@drawable/phonebook" />
 
             <TextView
-                android:text="No."
+                android:text=""
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/contacts_Id"
@@ -49,11 +49,11 @@
                 android:layout_weight="7" />
 
             <ImageButton
-                android:layout_height="20dp"
+                android:layout_height="15dp"
                 android:id="@+id/btnCancel"
                 android:background="@drawable/cancel"
                 android:scaleType="fitCenter"
-                android:layout_width="20dp" />
+                android:layout_width="15dp" />
         </LinearLayout>
     </android.support.v7.widget.CardView>
 </LinearLayout>

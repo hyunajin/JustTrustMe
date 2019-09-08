@@ -3,9 +3,11 @@ package com.example.asus.justtrustme;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -145,132 +147,45 @@ public class RegisterContacts extends AppCompatActivity implements NavigationVie
         switch (requestCode) {
             case (1) :
                 if (resultCode == Activity.RESULT_OK) {
-                    Cursor c =  getContentResolver().query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
-                    if (c.moveToFirst()) {
-                        String contactId = c.getString(c.getColumnIndex(ContactsContract.Contacts._ID));
-                        String name = c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+                    Uri contactData = data.getData();
+                    Cursor contact1 =  getContentResolver().query(contactData, null, null, null, null);
+                    if(contact1.moveToFirst()) {
+                        String name = contact1.getString(contact1.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+                        ContentResolver cr = getContentResolver();
+                        Cursor c = cr.query(ContactsContract.Contacts.CONTENT_URI, null,
+                                "DISPLAY_NAME = '" + name + "'", null, null);
 
-                        Cursor phones = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                                null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + contactId, null, null);
+                        if (c.moveToFirst()) {
+                            String contactId = c.getString(c.getColumnIndex(ContactsContract.Contacts._ID));
 
-                        while(phones.moveToNext()){
-                            String tel = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                            Cursor phones = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                                    null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + contactId, null, null);
 
-                            //showSelectedNumber(name, tel);
+                            while (phones.moveToNext()) {
+                                String tel = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
 
-                            contact.setName(name);
-                            contact.addTel(tel);
+                                contact.setName(name);
+                                contact.addTel(tel);
 
-                            datas.add(contact);
+                                datas.add(contact);
+                            }
+                            phones.close();
+                            RecyclerAdapter contactAdapter = new RecyclerAdapter(datas, getApplicationContext());
+                            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+                            recyclerView.setAdapter(contactAdapter);
                         }
-                        phones.close();
-                        RecyclerAdapter contactAdapter = new RecyclerAdapter(datas, getApplicationContext());
-                        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-                        recyclerView.setAdapter(contactAdapter);
+                        c.close();
                     }
-                    c.close();
+
                 }
                 break;
         }
-        /*Uri contactUri = data.getData();
-        String[] projection = {ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER};
-
-        Cursor cursor = getContentResolver().query(contactUri, projection, null, null, null);
-        cursor.moveToFirst();
-
-        while (cursor != null && cursor.moveToNext()){
-            String name = cursor.getString(0);
-            String number = cursor.getString(1);
-
-            Contact contact = new Contact();
-
-            contact.setName(name);
-            contact.addTel(number);
-
-            datas.add(contact);
-        }
-        if(cursor != null){
-            cursor.close();
-        }*/
-        /*switch(requestCode){
-            case(1) :
-                if(resultCode == RESULT_OK && data != null){
-                    Cursor cursor = getContentResolver().query(data.getData(),
-                            new String[] {ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
-                                    ContactsContract.CommonDataKinds.Phone.NUMBER},
-                            null,null,null);
-                    if(cursor.moveToFirst()){
-                        contact.setName(cursor.getString(0));
-                        contact.addTel(cursor.getString(1));
-
-                        datas.add(contact);
-                    }
-                }
-                break;
-        }*/
-
-        /*if(requestCode == 1 && data!=null){
-            Contact contact = new Contact();
-
-            Cursor cursor = getContentResolver().query(data.getData(),
-                    new String[] {ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
-                            ContactsContract.CommonDataKinds.Phone.NUMBER},
-                    null,null,null);
-            cursor.moveToFirst();
-
-            contact.setName(cursor.getString(0));
-            contact.addTel(cursor.getString(1));
-
-            datas.add(contact);
-
-            cursor.close();
-        }
-        */
     }
 
     public void showSelectedNumber(String name, String tel) {
         Toast.makeText(this, name + ": " + tel, Toast.LENGTH_LONG).show();
     }
 
-    /*private void getAllContacts() {
-        ArrayList<Contact> datas = new ArrayList();
-        Contact contact;
-
-        ContentResolver contentResolver = getContentResolver();
-        Cursor cursor = contentResolver.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC");
-        if (cursor.getCount() > 0) {
-            while (cursor.moveToNext()) {
-
-                int hasPhoneNumber = Integer.parseInt(cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER)));
-                if (hasPhoneNumber > 0) {
-                    String id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
-                    String name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-
-                    contact = new Contact();
-                    contact.setName(name);
-
-                    Cursor phoneCursor = contentResolver.query(
-                            ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                            null,
-                            ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
-                            new String[]{id},
-                            null);
-                    if (phoneCursor.moveToNext()) {
-                        String tel = phoneCursor.getString(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                        contact.addTel(tel);
-                    }
-
-                    phoneCursor.close();
-
-                    datas.add(contact);
-                }
-            }
-            RecyclerAdapter contactAdapter = new RecyclerAdapter(datas, getApplicationContext());
-            recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            recyclerView.setAdapter(contactAdapter);
-        }
-    }
-    */
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
