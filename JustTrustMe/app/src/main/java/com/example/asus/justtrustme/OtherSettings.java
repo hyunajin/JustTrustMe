@@ -96,7 +96,7 @@ public class OtherSettings extends AppCompatActivity implements NavigationView.O
         }else if (i==1){
             Toast.makeText(getApplicationContext(),"롱터치 눌림",Toast.LENGTH_SHORT).show();
         }else if (i==2){
-            Toast.makeText(getApplicationContext(),"버전 정보 눌림",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"2019.09",Toast.LENGTH_SHORT).show();
         }
     }
 }

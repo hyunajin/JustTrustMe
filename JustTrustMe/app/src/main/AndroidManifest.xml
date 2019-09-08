@@ -25,7 +25,11 @@
         <activity android:name=".KakaoLogin"></activity>
         <activity android:name=".GoogleLoign"></activity>
         <activity android:name=".FindingWay">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".BookMark" />
         <activity android:name=".RegisterContacts" />
@@ -35,11 +39,6 @@
         <activity android:name=".Home" />
         <activity android:name=".Search" />
         <activity android:name=".Guide">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 
