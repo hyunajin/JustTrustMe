@@ -18,7 +18,9 @@ public class GlobalApplication extends Application {
     }
 
     public static GlobalApplication getGlobalApplicationContext() {
-        return obj;
+       if (obj == null)
+           throw new IllegalStateException("this application does not inherit com.kakao.GlobalApplication");
+       return obj;
     }
 
     public static Activity getCurrentActivity() {
@@ -28,6 +30,12 @@ public class GlobalApplication extends Application {
     // Activity가 올라올때마다 Activity의 onCreate에서 호출해줘야한다.
     public static void setCurrentActivity(Activity currentActivity) {
         GlobalApplication.currentActivity = currentActivity;
+    }
+
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        obj=null;
     }
 }
 

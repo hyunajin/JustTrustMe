@@ -31,8 +31,10 @@ import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.MeResponseCallback;
 import com.kakao.usermgmt.response.model.UserProfile;
 import com.kakao.util.exception.KakaoException;
+import com.kakao.util.helper.log.Logger;
 
 public class Home extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+
 
     private Button btn_custom_login;
 
@@ -40,8 +42,8 @@ public class Home extends AppCompatActivity implements GoogleApiClient.OnConnect
 
     SignInButton Google_Login;
 
-    private static final String TAG = "";
-    SessionCallback callback;
+    private static final String TAG = Home.class.getSimpleName();
+    private SessionCallback callback;
 
 
 
@@ -61,6 +63,9 @@ public class Home extends AppCompatActivity implements GoogleApiClient.OnConnect
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        callback = new SessionCallback();
+        Session.getCurrentSession().addCallback(callback);
+
         btn_custom_login =(Button)findViewById(R.id.btn_custom_login);
         btn_custom_login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,11 +77,8 @@ public class Home extends AppCompatActivity implements GoogleApiClient.OnConnect
 
 
 
-        callback = new SessionCallback();
-        Session.getCurrentSession().addCallback(callback);
-        requestMe();
 
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
@@ -97,35 +99,12 @@ public class Home extends AppCompatActivity implements GoogleApiClient.OnConnect
 
     }
 
-    private void requestMe() {
-        //유저의 정보를 받아오는 함수
-        UserManagement.requestMe(new MeResponseCallback() {
-            @Override
-            public void onFailure(ErrorResult errorResult) {
-                Log.e(TAG, "error message=" + errorResult);
-//                super.onFailure(errorResult);
-            }
-            @Override
-            public void onSessionClosed(ErrorResult errorResult) {
-                Log.d(TAG, "onSessionClosed1 =" + errorResult);
-            }
-            @Override
-            public void onNotSignedUp() {
-                //카카오톡 회원이 아닐시
-                Log.d(TAG, "onNotSignedUp ");
-            }
-            @Override
-            public void onSuccess(UserProfile result) {
-                Log.e("UserProfile", result.toString());
-                Log.e("UserProfile", result.getId() + "");
-            }
-        });
-    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        super.onActivityResult(requestCode, resultCode, data);
+
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {
@@ -136,7 +115,17 @@ public class Home extends AppCompatActivity implements GoogleApiClient.OnConnect
             }
 
         }
+        if (Session.getCurrentSession().handleActivityResult(requestCode,resultCode,data)){
+            return;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Session.getCurrentSession().removeCallback(callback);
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
@@ -164,26 +153,30 @@ public class Home extends AppCompatActivity implements GoogleApiClient.OnConnect
 
     }
 
-    protected void redirectSignupActivity() {
-        final Intent intent = new Intent(this, Home.class);
-        startActivity(intent);
-        finish();
-    }
 
-    class SessionCallback implements ISessionCallback {
+
+    private class SessionCallback implements ISessionCallback {
 
         @Override
         public void onSessionOpened() {
 
-            requestMe();
+            redirectSignupActivity();
 
         }
         // 세션 실패시
         @Override
         public void onSessionOpenFailed(KakaoException exception) {
-
-
+            if (exception != null){
+                Logger.e(exception);
+            }
+            setContentView(R.layout.activity_home);
         }
+    }
+    protected void redirectSignupActivity() {
+        final Intent intent = new Intent(this, KakaoSignupActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(intent);
+        finish();
     }
     protected void setGooglePlusButtonText(SignInButton signInButton, String buttonText) {
         // Find the TextView that is inside of the SignInButton and set its text
@@ -198,4 +191,3 @@ public class Home extends AppCompatActivity implements GoogleApiClient.OnConnect
         }
     }
 }
-

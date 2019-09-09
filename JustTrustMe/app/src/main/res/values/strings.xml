@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name"> </string>
-    <string name="api_key">api키값입력해주세요</string>
+    <string name="api_key">be130753b2beba3d82df356ac0ccfc63</string>
+    <string name="kakao_app_key">be130753b2beba3d82df356ac0ccfc63</string>
     <string name="logout">로그아웃</string>
     <string name="history_of_use_remove">사용기록삭제</string>
     <string name="about_real_time_locations">실시간 위치정보</string>

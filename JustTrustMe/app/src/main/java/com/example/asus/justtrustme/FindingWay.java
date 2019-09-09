@@ -81,7 +81,7 @@ public class FindingWay extends AppCompatActivity implements NavigationView.OnNa
         convert_btn = findViewById(R.id.convert_btn);
         MapLayout mapLayout = new MapLayout(this);
         mMapView = mapLayout.getMapView();
-        mMapView.setDaumMapApiKey("7b16bf536b619a3a2bcee88f81106c7d");
+        mMapView.setDaumMapApiKey("be130753b2beba3d82df356ac0ccfc63");
         mMapView.setOpenAPIKeyAuthenticationResultListener(this);
         mMapView.setMapViewEventListener(this);
         mMapView.setMapType(MapView.MapType.Standard);
@@ -202,7 +202,7 @@ public class FindingWay extends AppCompatActivity implements NavigationView.OnNa
         mapView.addPOIItem(mCustomMarker);
         mapView.setMapCenterPoint(mapPoint, false);
 
-        mReverseGeoCoder = new MapReverseGeoCoder("7b16bf536b619a3a2bcee88f81106c7d", mMapView.getMapCenterPoint(), FindingWay.this, FindingWay.this);
+        mReverseGeoCoder = new MapReverseGeoCoder("be130753b2beba3d82df356ac0ccfc63", mMapView.getMapCenterPoint(), FindingWay.this, FindingWay.this);
         mReverseGeoCoder.startFindingAddress();
     }
 
@@ -334,7 +334,7 @@ public class FindingWay extends AppCompatActivity implements NavigationView.OnNa
     @Override
     public void onMapViewMoveFinished(MapView mapView, MapPoint mapPoint) {
         MapPoint.GeoCoordinate mapPointGeo = mapPoint.getMapPointGeoCoord();
-        mReverseGeoCoder = new MapReverseGeoCoder("7b16bf536b619a3a2bcee88f81106c7d", mMapView.getMapCenterPoint(), FindingWay.this, FindingWay.this);
+        mReverseGeoCoder = new MapReverseGeoCoder("be130753b2beba3d82df356ac0ccfc63", mMapView.getMapCenterPoint(), FindingWay.this, FindingWay.this);
         mReverseGeoCoder.startFindingAddress();
         Log.i("MapViewMoveFinished", String.format("MapView onMapViewCenterPointMoved (%f,%f)", mapPointGeo.latitude, mapPointGeo.longitude));
         latitude = mapPointGeo.latitude;
