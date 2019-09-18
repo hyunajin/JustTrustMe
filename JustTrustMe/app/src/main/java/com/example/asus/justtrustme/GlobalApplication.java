@@ -37,6 +37,7 @@ public class GlobalApplication extends Application {
         super.onTerminate();
         obj=null;
     }
+
 }
 
 

@@ -22,6 +22,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.kakao.auth.ISessionCallback;
 import com.kakao.auth.Session;
@@ -44,7 +45,6 @@ public class Home extends AppCompatActivity implements GoogleApiClient.OnConnect
 
     private static final String TAG = Home.class.getSimpleName();
     private SessionCallback callback;
-
 
 
 
@@ -71,12 +71,11 @@ public class Home extends AppCompatActivity implements GoogleApiClient.OnConnect
             @Override
             public void onClick(View v) {
                 button2.performClick();
+
+
             }
         });
         button2=(LoginButton)findViewById(R.id.button2);
-
-
-
 
                 GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -93,8 +92,16 @@ public class Home extends AppCompatActivity implements GoogleApiClient.OnConnect
             public void onClick(View v) {
                 Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
                 startActivityForResult(signInIntent, RC_SIGN_IN);
+                if (firebaseAuth.getCurrentUser() != null){
+
+                    startActivity(new Intent(getApplicationContext(),FindingWay.class));
+                }
+
+
             }
+
         });
+
 
 
     }
@@ -160,7 +167,26 @@ public class Home extends AppCompatActivity implements GoogleApiClient.OnConnect
         @Override
         public void onSessionOpened() {
 
-            redirectSignupActivity();
+
+            UserManagement.requestMe(new MeResponseCallback() {
+                @Override
+                public void onSessionClosed(ErrorResult errorResult) {
+
+                }
+
+                @Override
+                public void onNotSignedUp() {
+
+                }
+
+                @Override
+                public void onSuccess(UserProfile result) {
+                Intent nextIntent = new Intent(Home.this,FindingWay.class);
+                startActivity(nextIntent);
+                finish();
+                }
+
+            });
 
         }
         // 세션 실패시
@@ -171,6 +197,7 @@ public class Home extends AppCompatActivity implements GoogleApiClient.OnConnect
             }
             setContentView(R.layout.activity_home);
         }
+
     }
     protected void redirectSignupActivity() {
         final Intent intent = new Intent(this, KakaoSignupActivity.class);
@@ -178,6 +205,9 @@ public class Home extends AppCompatActivity implements GoogleApiClient.OnConnect
         startActivity(intent);
         finish();
     }
+
+
+
     protected void setGooglePlusButtonText(SignInButton signInButton, String buttonText) {
         // Find the TextView that is inside of the SignInButton and set its text
         for (int i = 0; i < signInButton.getChildCount(); i++) {

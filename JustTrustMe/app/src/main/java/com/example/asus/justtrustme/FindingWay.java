@@ -29,6 +29,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import net.daum.mf.map.api.MapLayout;
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
@@ -68,6 +70,8 @@ public class FindingWay extends AppCompatActivity implements NavigationView.OnNa
         toggle.syncState();
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
 
         //추가한 부분
         address_linear = findViewById(R.id.address_linear);
