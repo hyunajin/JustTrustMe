@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -35,7 +36,12 @@ import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapReverseGeoCoder;
 import net.daum.mf.map.api.MapView;
 
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserFactory;
+
+import java.net.URL;
 import java.security.MessageDigest;
+import java.util.ArrayList;
 
 //길찾기
 public class FindingWay extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, MapView.OpenAPIKeyAuthenticationResultListener, MapView.MapViewEventListener, MapView.CurrentLocationEventListener, MapReverseGeoCoder.ReverseGeoCodingResultListener {
@@ -58,7 +64,7 @@ public class FindingWay extends AppCompatActivity implements NavigationView.OnNa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_finding_way);
-
+        StrictMode.enableDefaults();
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawer = findViewById(R.id.drawer_layout_FW);
@@ -68,6 +74,9 @@ public class FindingWay extends AppCompatActivity implements NavigationView.OnNa
         toggle.syncState();
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        boolean inrow = false, inWGS84_LOGT = false, inWGS84_LAT = false;
+        String WGS84_LOGT = null, WGS84_LAT = null;
 
         //추가한 부분
         address_linear = findViewById(R.id.address_linear);
@@ -81,13 +90,72 @@ public class FindingWay extends AppCompatActivity implements NavigationView.OnNa
         convert_btn = findViewById(R.id.convert_btn);
         MapLayout mapLayout = new MapLayout(this);
         mMapView = mapLayout.getMapView();
-        mMapView.setDaumMapApiKey(this.getResources().getString(R.string.api_key));
+        mMapView.setDaumMapApiKey("059bfe5929581aee44c86a3c7271c7d8");
         mMapView.setOpenAPIKeyAuthenticationResultListener(this);
         mMapView.setMapViewEventListener(this);
         mMapView.setMapType(MapView.MapType.Standard);
-
+        ArrayList<String> sublat = new ArrayList<String>();
+        ArrayList<String> sublong = new ArrayList<String>();
+        MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(37.340515, 126.733540);
+        mMapView.setMapCenterPoint(mapPoint, true);
         ViewGroup mapViewContainer = findViewById(R.id.map_view);
         mapViewContainer.addView(mapLayout);
+
+        try {
+            URL url = new URL("https://openapi.gg.go.kr/CCTV?" + "Key=e53374de6b754ee79694f43f2af5b965" + "&pIndex=&pSize=250"); //검색 URL부분
+
+            XmlPullParserFactory parserCreator = XmlPullParserFactory.newInstance();
+            XmlPullParser parser = parserCreator.newPullParser();
+
+            parser.setInput(url.openStream(), null);
+
+            int parserEvent = parser.getEventType();
+
+            while (parserEvent != XmlPullParser.END_DOCUMENT) {
+                switch (parserEvent) {
+                    case XmlPullParser.START_TAG://parser가 시작 태그를 만나면 실행
+                        if (parser.getName().equals("WGS84_LOGT")) { //mapy 만나면 내용을 받을수 있게 하자
+                            inWGS84_LOGT = true;
+                        }
+                        if (parser.getName().equals("WGS84_LAT")) { //mapy 만나면 내용을 받을수 있게 하자
+                            inWGS84_LAT = true;
+                        }
+                        break;
+
+                    case XmlPullParser.TEXT://parser가 내용에 접근했을때
+
+                        if (inWGS84_LOGT) { //isMapy이 true일 때 태그의 내용을 저장.
+                            WGS84_LOGT = parser.getText();
+                            sublong.add(WGS84_LOGT);
+                            inWGS84_LOGT = false;
+                        }
+                        if (inWGS84_LAT) { //isMapy이 true일 때 태그의 내용을 저장.
+                            WGS84_LAT = parser.getText();
+                            sublat.add(WGS84_LAT);
+                            inWGS84_LAT = false;
+                        }
+                        break;
+                    case XmlPullParser.END_TAG:
+                        if (parser.getName().equals("row")) {
+                            inrow = false;
+                        }
+                        break;
+                }
+                parserEvent = parser.next();
+            }
+        } catch (Exception e) {
+        }
+        MapPOIItem customMarker = new MapPOIItem();
+        customMarker.setItemName("Custom Marker");
+        customMarker.setTag(1);
+        for (int i = 0; i < sublat.size(); i++) {
+            customMarker.setMapPoint(MapPoint.mapPointWithGeoCoord(Double.valueOf(sublat.get(i)), Double.valueOf(sublong.get(i))));
+            customMarker.setMarkerType(MapPOIItem.MarkerType.CustomImage); // CCTV 마커 모양
+            customMarker.setCustomImageResourceId(R.drawable.custommarker);
+            customMarker.setCustomImageAnchor(0.5f, 1.0f);
+            customMarker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
+            mMapView.addPOIItem(customMarker);
+        }
 
         //현재 위치 찾기
         tracker = findViewById(R.id.tracker_imageBtn);
@@ -202,7 +270,7 @@ public class FindingWay extends AppCompatActivity implements NavigationView.OnNa
         mapView.addPOIItem(mCustomMarker);
         mapView.setMapCenterPoint(mapPoint, false);
 
-        mReverseGeoCoder = new MapReverseGeoCoder(getString(R.string.api_key), mMapView.getMapCenterPoint(), FindingWay.this, FindingWay.this);
+        mReverseGeoCoder = new MapReverseGeoCoder("059bfe5929581aee44c86a3c7271c7d8", mMapView.getMapCenterPoint(), FindingWay.this, FindingWay.this);
         mReverseGeoCoder.startFindingAddress();
     }
 
@@ -334,7 +402,7 @@ public class FindingWay extends AppCompatActivity implements NavigationView.OnNa
     @Override
     public void onMapViewMoveFinished(MapView mapView, MapPoint mapPoint) {
         MapPoint.GeoCoordinate mapPointGeo = mapPoint.getMapPointGeoCoord();
-        mReverseGeoCoder = new MapReverseGeoCoder(getString(R.string.api_key), mMapView.getMapCenterPoint(), FindingWay.this, FindingWay.this);
+        mReverseGeoCoder = new MapReverseGeoCoder("059bfe5929581aee44c86a3c7271c7d8", mMapView.getMapCenterPoint(), FindingWay.this, FindingWay.this);
         mReverseGeoCoder.startFindingAddress();
         Log.i("MapViewMoveFinished", String.format("MapView onMapViewCenterPointMoved (%f,%f)", mapPointGeo.latitude, mapPointGeo.longitude));
         latitude = mapPointGeo.latitude;
