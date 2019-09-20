@@ -69,7 +69,7 @@ public class Notice extends AppCompatActivity implements NavigationView.OnNaviga
             startActivity(intent);
         } else if (id == R.id.nav_book_mark){
             drawer.closeDrawer(GravityCompat.START);
-            Intent intent = new Intent(Notice.this, BookMark.class);
+            Intent intent = new Intent(Notice.this, BookMarkActi.class);
             startActivity(intent);
         }else if (id == R.id.nav_faq){
             drawer.closeDrawer(GravityCompat.START);

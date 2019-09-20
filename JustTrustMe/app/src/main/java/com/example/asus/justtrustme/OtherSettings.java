@@ -66,7 +66,7 @@ public class OtherSettings extends AppCompatActivity implements NavigationView.O
         int id = menuItem.getItemId();
         if (id == R.id.nav_book_mark) {
             drawer.closeDrawer(GravityCompat.START);
-            Intent intent = new Intent(OtherSettings.this, BookMark.class);
+            Intent intent = new Intent(OtherSettings.this, BookMarkActi.class);
             startActivity(intent);
         } else if (id == R.id.nav_register_contacts) {
             drawer.closeDrawer(GravityCompat.START);

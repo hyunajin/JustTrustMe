@@ -68,7 +68,7 @@ public class FAQ extends AppCompatActivity implements NavigationView.OnNavigatio
             startActivity(intent);
         } else if (id == R.id.nav_book_mark){
             drawer.closeDrawer(GravityCompat.START);
-            Intent intent = new Intent(FAQ.this, BookMark.class);
+            Intent intent = new Intent(FAQ.this, BookMarkActi.class);
             startActivity(intent);
         }else if (id == R.id.nav_notice){
             drawer.closeDrawer(GravityCompat.START);

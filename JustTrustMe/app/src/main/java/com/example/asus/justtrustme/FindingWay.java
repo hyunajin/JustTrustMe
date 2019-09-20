@@ -1,9 +1,6 @@
 package com.example.asus.justtrustme;
 
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.graphics.Color;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -14,19 +11,14 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebSettings;
-import android.webkit.WebViewClient;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import net.daum.mf.map.api.MapLayout;
@@ -34,8 +26,6 @@ import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapReverseGeoCoder;
 import net.daum.mf.map.api.MapView;
-
-import java.security.MessageDigest;
 
 //길찾기
 public class FindingWay extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, MapView.OpenAPIKeyAuthenticationResultListener, MapView.MapViewEventListener, MapView.CurrentLocationEventListener, MapReverseGeoCoder.ReverseGeoCodingResultListener {
@@ -130,6 +120,9 @@ public class FindingWay extends AppCompatActivity implements NavigationView.OnNa
 
             }
         });
+
+
+
         //장소명으로 주소 검색하기 - 출발지
         starting_point_textView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,6 +140,9 @@ public class FindingWay extends AppCompatActivity implements NavigationView.OnNa
                 startActivity(searchIntent);
             }
         });
+
+
+
         //출발지와 도착지 모두 지정 후 길찾기 버튼 눌렀을 경우 카카오맵으로 도보 길찾기 진행
         // -> 이 부분을 맵뷰에 알고리즘 적용하여 변경해야 함
         find_way_btn.setOnClickListener(new View.OnClickListener() {
@@ -233,7 +229,7 @@ public class FindingWay extends AppCompatActivity implements NavigationView.OnNa
         int id = menuItem.getItemId();
         if (id == R.id.nav_book_mark) {
             drawer.closeDrawer(GravityCompat.START);
-            Intent intent = new Intent(FindingWay.this, BookMark.class);
+            Intent intent = new Intent(FindingWay.this, BookMarkActi.class);
             startActivity(intent);
         } else if (id == R.id.nav_register_contacts) {
             drawer.closeDrawer(GravityCompat.START);

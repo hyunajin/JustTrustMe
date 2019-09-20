@@ -1,86 +1,100 @@
 package com.example.asus.justtrustme;
 
-import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
-
-//즐겨찾기
-public class BookMark extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
-    DrawerLayout drawer;
-    Toolbar toolbar;
-    NavigationView navigationView;
+public class Bookmark {
+    private int bookmark_no;
+    private String bookmark_start_lat;
+    private String bookmark_start_lon;
+    private String bookmark_destination_lat;
+    private String bookmark_destination_lon;
+    private int bookmark_guidance_cat;
+    private String bookmark_start_addr;
+    private String bookmark_destination_addr;
+    private int mem_no;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_book_mark);
-
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        drawer = findViewById(R.id.drawer_layout_BM);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-        navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+    public String toString() {
+        return "Bookmark{" +
+                "bookmark_no=" + bookmark_no +
+                ", bookmark_start_lat='" + bookmark_start_lat + '\'' +
+                ", bookmark_start_lon='" + bookmark_start_lon + '\'' +
+                ", bookmark_destination_lat='" + bookmark_destination_lat + '\'' +
+                ", bookmark_destination_lon='" + bookmark_destination_lon + '\'' +
+                ", bookmark_guidance_cat=" + bookmark_guidance_cat +
+                ", bookmark_start_addr='" + bookmark_start_addr + '\'' +
+                ", bookmark_destination_addr='" + bookmark_destination_addr + '\'' +
+                ", mem_no=" + mem_no +
+                '}';
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_settings, menu);
-        return super.onCreateOptionsMenu(menu);
+    public int getBookmark_no() {
+        return bookmark_no;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
-            case R.id.other_settings:
-                Intent intent1 = new Intent(BookMark.this, OtherSettings.class);
-                startActivity(intent1);
-                break;
-            case R.id.logout:
-                Intent intent2 = new Intent(BookMark.this, Logout.class);
-                startActivity(intent2);
-                break;
-        }
-        return super.onOptionsItemSelected(item);
+    public void setBookmark_no(int bookmark_no) {
+        this.bookmark_no = bookmark_no;
     }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        int id = menuItem.getItemId();
-        if (id == R.id.nav_finding_a_way){
-            drawer.closeDrawer(GravityCompat.START);
-            Intent intent = new Intent(BookMark.this, FindingWay.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_book_mark){
-            drawer.closeDrawer(GravityCompat.START);
-            Intent intent = new Intent(BookMark.this, BookMark.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_register_contacts){
-            drawer.closeDrawer(GravityCompat.START);
-            Intent intent = new Intent(BookMark.this, RegisterContacts.class);
-            startActivity(intent);
-        }else if (id == R.id.nav_notice){
-            drawer.closeDrawer(GravityCompat.START);
-            Intent intent = new Intent(BookMark.this, Notice.class);
-            startActivity(intent);
-        }else if (id == R.id.nav_faq){
-            drawer.closeDrawer(GravityCompat.START);
-            Intent intent = new Intent(BookMark.this, FAQ.class);
-            startActivity(intent);
-        }
-        return true;
+    public String getBookmark_start_lat() {
+        return bookmark_start_lat;
+    }
+
+    public void setBookmark_start_lat(String bookmark_start_lat) {
+        this.bookmark_start_lat = bookmark_start_lat;
+    }
+
+    public String getBookmark_start_lon() {
+        return bookmark_start_lon;
+    }
+
+    public void setBookmark_start_lon(String bookmark_start_lon) {
+        this.bookmark_start_lon = bookmark_start_lon;
+    }
+
+    public String getBookmark_destination_lat() {
+        return bookmark_destination_lat;
+    }
+
+    public void setBookmark_destination_lat(String bookmark_destination_lat) {
+        this.bookmark_destination_lat = bookmark_destination_lat;
+    }
+
+    public String getBookmark_destination_lon() {
+        return bookmark_destination_lon;
+    }
+
+    public void setBookmark_destination_lon(String bookmark_destination_lon) {
+        this.bookmark_destination_lon = bookmark_destination_lon;
+    }
+
+    public int getBookmark_guidance_cat() {
+        return bookmark_guidance_cat;
+    }
+
+    public void setBookmark_guidance_cat(int bookmark_guidance_cat) {
+        this.bookmark_guidance_cat = bookmark_guidance_cat;
+    }
+
+    public String getBookmark_start_addr() {
+        return bookmark_start_addr;
+    }
+
+    public void setBookmark_start_addr(String bookmark_start_addr) {
+        this.bookmark_start_addr = bookmark_start_addr;
+    }
+
+    public String getBookmark_destination_addr() {
+        return bookmark_destination_addr;
+    }
+
+    public void setBookmark_destination_addr(String bookmark_destination_addr) {
+        this.bookmark_destination_addr = bookmark_destination_addr;
+    }
+
+    public int getMem_no() {
+        return mem_no;
+    }
+
+    public void setMem_no(int mem_no) {
+        this.mem_no = mem_no;
     }
 }

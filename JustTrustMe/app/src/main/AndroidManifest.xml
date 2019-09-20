@@ -31,7 +31,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".BookMark" />
+        <activity android:name=".BookMarkActi" />
         <activity android:name=".RegisterContacts" />
         <activity android:name=".OtherSettings" />
         <activity android:name=".Notice" />

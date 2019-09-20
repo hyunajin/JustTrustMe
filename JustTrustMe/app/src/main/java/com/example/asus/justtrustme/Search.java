@@ -11,7 +11,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -94,7 +93,7 @@ public class Search extends AppCompatActivity implements NavigationView.OnNaviga
         int id = item.getItemId();
         if (id == R.id.nav_book_mark) {
             drawer.closeDrawer(GravityCompat.START);
-            Intent intent = new Intent(Search.this, BookMark.class);
+            Intent intent = new Intent(Search.this, BookMarkActi.class);
             startActivity(intent);
         } else if (id == R.id.nav_register_contacts) {
             drawer.closeDrawer(GravityCompat.START);

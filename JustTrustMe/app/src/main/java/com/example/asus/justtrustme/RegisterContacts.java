@@ -64,7 +64,7 @@ public class RegisterContacts extends AppCompatActivity implements NavigationVie
         if (id == R.id.nav_book_mark) {
             //Toast.makeText(getApplicationContext(),"else 로 들어왔다.",Toast.LENGTH_SHORT).show();
             drawer.closeDrawer(GravityCompat.START);
-            Intent intent = new Intent(RegisterContacts.this, BookMark.class);
+            Intent intent = new Intent(RegisterContacts.this, BookMarkActi.class);
             startActivity(intent);
         } else if (id == R.id.nav_finding_a_way) {
             drawer.closeDrawer(GravityCompat.START);

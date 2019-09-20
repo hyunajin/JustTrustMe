@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name"> </string>
-    <string name="api_key">api키값입력해주세요</string>
+    <string name="api_key">d078b076e2f929df66ec24a56fe6cd69</string>
     <string name="logout">로그아웃</string>
     <string name="history_of_use_remove">사용기록삭제</string>
     <string name="about_real_time_locations">실시간 위치정보</string>
@@ -19,4 +19,5 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="starting_point">출발지</string>
     <string name="destination">도착지</string>
+    <string name="ip_address">192.168.35.187:8181</string>
 </resources>
