@@ -33,6 +33,7 @@ import android.widget.TextView;
 import net.daum.mf.map.api.MapLayout;
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
+import net.daum.mf.map.api.MapPolyline;
 import net.daum.mf.map.api.MapReverseGeoCoder;
 import net.daum.mf.map.api.MapView;
 
@@ -96,13 +97,14 @@ public class FindingWay extends AppCompatActivity implements NavigationView.OnNa
         mMapView.setMapType(MapView.MapType.Standard);
         ArrayList<String> sublat = new ArrayList<String>();
         ArrayList<String> sublong = new ArrayList<String>();
-        MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(37.340515, 126.733540);
+        MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(37.321478, 127.097414);
         mMapView.setMapCenterPoint(mapPoint, true);
-        ViewGroup mapViewContainer = findViewById(R.id.map_view);
+        final ViewGroup mapViewContainer = findViewById(R.id.map_view);
+
         mapViewContainer.addView(mapLayout);
 
         try {
-            URL url = new URL("https://openapi.gg.go.kr/CCTV?" + "Key=e53374de6b754ee79694f43f2af5b965" + "&pIndex=&pSize=250"); //검색 URL부분
+            URL url = new URL("https://openapi.gg.go.kr/CCTV?" + "Key=e53374de6b754ee79694f43f2af5b965" + "&pIndex=&pSize=20"); //검색 URL부분
 
             XmlPullParserFactory parserCreator = XmlPullParserFactory.newInstance();
             XmlPullParser parser = parserCreator.newPullParser();
@@ -155,7 +157,20 @@ public class FindingWay extends AppCompatActivity implements NavigationView.OnNa
             customMarker.setCustomImageAnchor(0.5f, 1.0f);
             customMarker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
             mMapView.addPOIItem(customMarker);
+
+            MapPolyline polyline = new MapPolyline();
+            polyline.setTag(1000);
+            polyline.setLineColor(Color.argb(128, 0, 0, 255));
+            for (int j = 0; j < sublat.size(); j++) {
+                double x = Double.valueOf(sublat.get(j));
+                double y = Double.valueOf(sublong.get(j));
+                polyline.addPoint(MapPoint.mapPointWithGeoCoord(x,y));
+                mMapView.addPolyline(polyline);
+                mMapView.fitMapViewAreaToShowPolyline(polyline);
+
+            }
         }
+
 
         //현재 위치 찾기
         tracker = findViewById(R.id.tracker_imageBtn);
@@ -220,15 +235,19 @@ public class FindingWay extends AppCompatActivity implements NavigationView.OnNa
         find_way_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String getStartingPoint = starting_point_textView.getText().toString();
+                Intent intent = new Intent(FindingWay.this, Guide.class);
+                startActivity(intent);
+                mapViewContainer.removeAllViews();
+                /*String getStartingPoint = starting_point_textView.getText().toString();
                 String getDestPoint = dest_point_textView.getText().toString();
                 if (!getStartingPoint.equals("출발지") && !getDestPoint.equals("도착지")) {
                     String url = "daummaps://route?sp=" + startPoint_latitude + "," + startPoint_longitude + "&ep=" + destPoint_latitude + "," + destPoint_longitude + "&by=FOOT";
                     Intent findWayIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                     startActivity(findWayIntent);
-                }
+                }*/
             }
         });
+
 
 
 
