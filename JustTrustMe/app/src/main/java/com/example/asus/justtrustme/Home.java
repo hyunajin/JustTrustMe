@@ -39,6 +39,7 @@ public class Home extends AppCompatActivity implements GoogleApiClient.OnConnect
 
     private Button btn_custom_login;
 
+
     private LoginButton button2;
 
     SignInButton Google_Login;
@@ -71,8 +72,6 @@ public class Home extends AppCompatActivity implements GoogleApiClient.OnConnect
             @Override
             public void onClick(View v) {
                 button2.performClick();
-
-
             }
         });
         button2=(LoginButton)findViewById(R.id.button2);
@@ -92,13 +91,10 @@ public class Home extends AppCompatActivity implements GoogleApiClient.OnConnect
             public void onClick(View v) {
                 Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
                 startActivityForResult(signInIntent, RC_SIGN_IN);
-                if (firebaseAuth.getCurrentUser() != null){
 
-                    startActivity(new Intent(getApplicationContext(),FindingWay.class));
                 }
 
 
-            }
 
         });
 
@@ -145,6 +141,7 @@ public class Home extends AppCompatActivity implements GoogleApiClient.OnConnect
                             Toast.makeText(Home.this, "인증 실패", Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(Home.this, "구글 로그인 인증 성공", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(getApplicationContext(),FindingWay.class));
                         }
                     }
                 });
@@ -181,9 +178,9 @@ public class Home extends AppCompatActivity implements GoogleApiClient.OnConnect
 
                 @Override
                 public void onSuccess(UserProfile result) {
-                Intent nextIntent = new Intent(Home.this,FindingWay.class);
-                startActivity(nextIntent);
-                finish();
+                    Intent nextIntent = new Intent(Home.this,FindingWay.class);
+                    startActivity(nextIntent);
+                    finish();
                 }
 
             });
