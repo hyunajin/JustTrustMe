@@ -1,6 +1,8 @@
 package com.example.asus.justtrustme;
 
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.camera2.CameraAccessException;
@@ -54,7 +56,7 @@ public class Guide extends AppCompatActivity implements NavigationView.OnNavigat
     private CameraManager mCameraManager;
     private String mCameraId;
     ImageButton bm_btn;
-    static String getLoginMemNo="1",getBookmark_start_addr,getBookmark_destination_addr;          //로그인한 사람의 번호 저장 필요!!
+    static String getLoginMemNo="1",getBookmark_start_addr,getBookmark_destination_addr,receiveMsg;        //로그인한 사람의 번호 저장 필요!!
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 
     @Override
@@ -69,6 +71,7 @@ public class Guide extends AppCompatActivity implements NavigationView.OnNavigat
         Intent intent = getIntent();
         getBookmark_start_addr = intent.getStringExtra("bookmark_start_addr");
         getBookmark_destination_addr = intent.getStringExtra("bookmark_destination_addr");
+        dataBookmarkCheckAppend();
 
         mp =  MediaPlayer.create(Guide.this, R.raw.siren);
         mp.setLooping( true );
@@ -119,7 +122,6 @@ public class Guide extends AppCompatActivity implements NavigationView.OnNavigat
             @Override
             public void onClick(View v) {
                 bm_btn.setImageResource(R.drawable.likey);
-                //여기!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!즐겨찾기 insert 수정중!!!
                 dataBookmarkAppend();
             }
         });
@@ -212,14 +214,13 @@ public class Guide extends AppCompatActivity implements NavigationView.OnNavigat
         return true;
     }
 
-
     public void dataBookmarkAppend(){
         String bookmark_start_lat = "126.733500";     //임의의 값 지정했음
         String bookmark_start_lon = "37.340389";     //임의의 값 지정했음
         String bookmark_destination_lat = "126.7331214";     //임의의 값 지정했음
         String bookmark_destination_lon = "37.3420975";     //임의의 값 지정했음
-        String bookmark_start_addr = getBookmark_start_addr;     //임의의 값 지정했음
-        String bookmark_destination_addr = getBookmark_destination_addr;     //임의의 값 지정했음
+        String bookmark_start_addr = getBookmark_start_addr;
+        String bookmark_destination_addr = getBookmark_destination_addr;
         String mem_no = getLoginMemNo;
 
         if(bookmark_start_lat!=null && bookmark_start_lat.trim().length()!=0 && bookmark_start_lon!=null
@@ -293,6 +294,80 @@ public class Guide extends AppCompatActivity implements NavigationView.OnNavigat
         protected void onPostExecute(String aVoid) {
             super.onPostExecute(aVoid);
             Log.d("InsertTask","후처리 ---------------------");
+        }
+    }
+
+    public void dataBookmarkCheckAppend(){
+        String bookmark_start_addr = getBookmark_start_addr;
+        String bookmark_destination_addr = getBookmark_destination_addr;
+        String mem_no = getLoginMemNo;
+
+        if(bookmark_start_addr!=null && bookmark_start_addr.trim().length()!=0
+                && bookmark_destination_addr!=null && bookmark_destination_addr.trim().length()!=0
+                && mem_no!=null && mem_no.trim().length()!=0) {
+            new Guide.BookmarkCheckTask().execute(bookmark_start_addr.trim(),bookmark_destination_addr.trim(),mem_no.trim());
+            Log.d("InsertDB", "저장호출");
+        }else{
+            Log.d("InsertDB","저장호출못함");
+        }
+    }
+    class BookmarkCheckTask extends AsyncTask<String, String, String> {
+        public String ip = getResources().getString(R.string.ip_address);
+        String serverIp = "http://" + ip + "/justtrustmeDB/checkByAddrBookmark.jsp";
+
+        @Override
+        protected String doInBackground(String... params) {
+            String bookmark_start_addr = params[0];
+            String bookmark_destination_addr = params[1];
+
+            try {
+                String str;
+                String data = "bookmark_start_addr=" + URLEncoder.encode(bookmark_start_addr, "UTF-8");
+                data += "&bookmark_destination_addr" + "=" + URLEncoder.encode(bookmark_destination_addr, "UTF-8");
+                data += "&mem_no" + "=" + URLEncoder.encode(getLoginMemNo, "UTF-8");
+
+                URL url = new URL(serverIp);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setDoInput(true);
+                conn.setDoOutput(true);
+
+                OutputStream os = conn.getOutputStream();
+                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+                writer.write(data);
+                writer.flush();
+                writer.close();
+                os.close();
+                if (conn.getResponseCode() == conn.HTTP_OK) {
+                    InputStreamReader tmp = new InputStreamReader(conn.getInputStream(), "UTF-8");
+                    BufferedReader reader = new BufferedReader(tmp);
+                    StringBuffer buffer = new StringBuffer();
+                    while ((str = reader.readLine()) != null) {
+                        buffer.append(str);
+                    }
+                    receiveMsg = buffer.toString();
+                    Log.d("통신 결과", "Return: " + receiveMsg);
+                } else {
+                    Log.i("통신 결과", conn.getResponseCode() + "에러");
+                }
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return receiveMsg;
+        }
+
+        @Override
+        protected void onPostExecute(String aVoid) {
+            super.onPostExecute(aVoid);
+            Log.d("InsertTask", "후처리 ---------------------");
+            if (receiveMsg.equals("true")) {
+                bm_btn.setImageResource(R.drawable.likey);
+            }
         }
     }
 }
