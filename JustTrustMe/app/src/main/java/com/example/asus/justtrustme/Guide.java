@@ -3,6 +3,7 @@ package com.example.asus.justtrustme;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraManager;
@@ -27,10 +28,18 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import net.daum.mf.map.api.CameraUpdateFactory;
 import net.daum.mf.map.api.MapLayout;
+import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
+import net.daum.mf.map.api.MapPointBounds;
+import net.daum.mf.map.api.MapPolyline;
 import net.daum.mf.map.api.MapView;
 
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserFactory;
+
+import java.net.URL;
 import java.util.ArrayList;
 
 //즐겨찾기
@@ -38,7 +47,7 @@ public class Guide extends AppCompatActivity implements NavigationView.OnNavigat
     DrawerLayout drawer;
     Toolbar toolbar;
     NavigationView navigationView;
-
+    static String startPoint_latitude, startPoint_longitude, destPoint_latitude, destPoint_longitude;
     private MediaPlayer mp;
     Button Siren;
 
@@ -54,6 +63,9 @@ public class Guide extends AppCompatActivity implements NavigationView.OnNavigat
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        boolean inrow = false, inWGS84_LOGT = false, inWGS84_LAT = false;
+        String WGS84_LOGT = null, WGS84_LAT = null;
         setContentView(R.layout.activity_guide);
         StrictMode.enableDefaults();
         MapView mMapView = new MapView(this);
@@ -66,6 +78,76 @@ public class Guide extends AppCompatActivity implements NavigationView.OnNavigat
         ViewGroup mapViewContainer = findViewById(R.id.map_view);
         mapViewContainer.addView(mMapView);
 
+
+        try {
+            URL url = new URL("https://openapi.gg.go.kr/CCTV?" + "Key=e53374de6b754ee79694f43f2af5b965" + "&pIndex=&pSize=50"); //검색 URL부분
+
+            XmlPullParserFactory parserCreator = XmlPullParserFactory.newInstance();
+            XmlPullParser parser = parserCreator.newPullParser();
+
+            parser.setInput(url.openStream(), null);
+
+            int parserEvent = parser.getEventType();
+
+            while (parserEvent != XmlPullParser.END_DOCUMENT) {
+                switch (parserEvent) {
+                    case XmlPullParser.START_TAG://parser가 시작 태그를 만나면 실행
+                        if (parser.getName().equals("WGS84_LOGT")) { //mapy 만나면 내용을 받을수 있게 하자
+                            inWGS84_LOGT = true;
+                        }
+                        if (parser.getName().equals("WGS84_LAT")) { //mapy 만나면 내용을 받을수 있게 하자
+                            inWGS84_LAT = true;
+                        }
+                        break;
+
+                    case XmlPullParser.TEXT://parser가 내용에 접근했을때
+
+                        if (inWGS84_LOGT) { //isMapy이 true일 때 태그의 내용을 저장.
+                            WGS84_LOGT = parser.getText();
+                            sublong.add(WGS84_LOGT);
+                            inWGS84_LOGT = false;
+                        }
+                        if (inWGS84_LAT) { //isMapy이 true일 때 태그의 내용을 저장.
+                            WGS84_LAT = parser.getText();
+                            sublat.add(WGS84_LAT);
+                            inWGS84_LAT = false;
+                        }
+                        break;
+                    case XmlPullParser.END_TAG:
+                        if (parser.getName().equals("row")) {
+                            inrow = false;
+                        }
+                        break;
+                }
+                parserEvent = parser.next();
+            }
+        } catch (Exception e) {
+        }
+        MapPOIItem customMarker = new MapPOIItem();
+        customMarker.setItemName("Custom Marker");
+        customMarker.setTag(1);
+        for (int i = 0; i < sublat.size(); i++) {
+            customMarker.setMapPoint(MapPoint.mapPointWithGeoCoord(Double.valueOf(sublat.get(i)), Double.valueOf(sublong.get(i))));
+            customMarker.setMarkerType(MapPOIItem.MarkerType.CustomImage); // CCTV 마커 모양
+            customMarker.setCustomImageResourceId(R.drawable.custommarker);
+            customMarker.setCustomImageAnchor(0.5f, 1.0f);
+            customMarker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
+            mMapView.addPOIItem(customMarker);
+
+
+            MapPolyline polyline = new MapPolyline();
+            MapPolyline polyline1 = new MapPolyline();
+            polyline.setTag(1000);
+            polyline.setLineColor(Color.argb(128, 204, 255, 255));
+            for (int j = 0; j < sublat.size(); j++) {
+                double x = Double.valueOf(sublat.get(j));
+                double y = Double.valueOf(sublong.get(j));
+                polyline.addPoint(MapPoint.mapPointWithGeoCoord(x, y));
+                mMapView.addPolyline(polyline);
+                mMapView.fitMapViewAreaToShowPolyline(polyline);
+
+            }
+        }
 
         mp =  MediaPlayer.create(Guide.this, R.raw.siren);
         mp.setLooping( true );

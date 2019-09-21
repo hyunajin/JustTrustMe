@@ -158,18 +158,9 @@ public class FindingWay extends AppCompatActivity implements NavigationView.OnNa
             customMarker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
             mMapView.addPOIItem(customMarker);
 
-            MapPolyline polyline = new MapPolyline();
-            polyline.setTag(1000);
-            polyline.setLineColor(Color.argb(128, 0, 0, 255));
-            for (int j = 0; j < sublat.size(); j++) {
-                double x = Double.valueOf(sublat.get(j));
-                double y = Double.valueOf(sublong.get(j));
-                polyline.addPoint(MapPoint.mapPointWithGeoCoord(x,y));
-                mMapView.addPolyline(polyline);
-                mMapView.fitMapViewAreaToShowPolyline(polyline);
 
             }
-        }
+
 
 
         //현재 위치 찾기
@@ -236,6 +227,8 @@ public class FindingWay extends AppCompatActivity implements NavigationView.OnNa
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(FindingWay.this, Guide.class);
+                intent.putExtra(startPoint_latitude,startPoint_longitude);
+                intent.putExtra(destPoint_latitude,destPoint_longitude);
                 startActivity(intent);
                 mapViewContainer.removeAllViews();
                 /*String getStartingPoint = starting_point_textView.getText().toString();
