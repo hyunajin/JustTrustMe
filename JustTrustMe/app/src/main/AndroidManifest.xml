@@ -38,6 +38,7 @@
         <activity android:name=".FAQ" />
         <activity android:name=".Home" />
         <activity android:name=".Search"/>
+        <activity android:name=".Guide"/>
     </application>
 
 </manifest>

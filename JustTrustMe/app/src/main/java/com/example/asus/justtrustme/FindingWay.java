@@ -150,11 +150,17 @@ public class FindingWay extends AppCompatActivity implements NavigationView.OnNa
             public void onClick(View view) {
                 String getStartingPoint = starting_point_textView.getText().toString();
                 String getDestPoint = dest_point_textView.getText().toString();
+                /*
                 if (!getStartingPoint.equals("출발지") && !getDestPoint.equals("도착지")) {
                     String url = "daummaps://route?sp=" + startPoint_latitude + "," + startPoint_longitude + "&ep=" + destPoint_latitude + "," + destPoint_longitude + "&by=FOOT";
                     Intent findWayIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                     startActivity(findWayIntent);
                 }
+                */
+                Intent intent = new Intent(FindingWay.this, Guide.class);
+                intent.putExtra("bookmark_start_addr", getStartingPoint);
+                intent.putExtra("bookmark_destination_addr", getDestPoint);
+                startActivity(intent);
             }
         });
 
