@@ -16,9 +16,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".SaveActivity">
 
-        <activity android:name=".KakaoSignupActivity"/>
-        <activity android:name=".ButtonActivity" />
+        </activity>
+        <activity android:name=".KakaoSignupActivity" />
+        <activity android:name=".ButtonActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <meta-data
             android:name="com.kakao.sdk.AppKey"
@@ -26,21 +34,16 @@
 
         <activity android:name=".KakaoLogin" />
         <activity android:name=".GoogleLoign" />
-        <activity android:name=".FindingWay">
+        <activity android:name=".FindingWay"></activity>
+        <activity android:name=".BookMark" />
+        <activity android:name=".RegisterContacts" />
+        <activity android:name=".OtherSettings" />
+        <activity android:name=".NoticeActivity" />
+        <activity android:name=".FAQ" />
+        <activity android:name=".Home">
 
-</activity>
-<activity android:name=".BookMark" />
-<activity android:name=".RegisterContacts" />
-<activity android:name=".OtherSettings" />
-<activity android:name=".NoticeActivity" />
-<activity android:name=".FAQ" />
-<activity android:name=".Home">
-    <intent-filter>
-        <action android:name="android.intent.action.MAIN" />
-
-        <category android:name="android.intent.category.LAUNCHER" />
-    </intent-filter>
-</activity>
-<activity android:name=".Search" />
+        </activity>
+        <activity android:name=".Search" />
     </application>
+
 </manifest>

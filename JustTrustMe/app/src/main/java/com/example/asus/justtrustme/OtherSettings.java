@@ -93,6 +93,8 @@ public class OtherSettings extends AppCompatActivity implements NavigationView.O
         Log.i("Other Settings","you Clicked now : " + i);
         if (i==0){
             Toast.makeText(getApplicationContext(),"메시지 내용 수정 눌림",Toast.LENGTH_SHORT).show();
+            Intent saveintent = new Intent(OtherSettings.this, SaveActivity.class);
+            startActivity(saveintent);
         }else if (i==1){
             Toast.makeText(getApplicationContext(),"롱터치 눌림",Toast.LENGTH_SHORT).show();
         }else if (i==2){
