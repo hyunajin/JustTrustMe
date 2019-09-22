@@ -44,6 +44,7 @@ import java.net.URL;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 
+
 //길찾기
 public class FindingWay extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, MapView.OpenAPIKeyAuthenticationResultListener, MapView.MapViewEventListener, MapView.CurrentLocationEventListener, MapReverseGeoCoder.ReverseGeoCodingResultListener {
     DrawerLayout drawer;
@@ -226,10 +227,12 @@ public class FindingWay extends AppCompatActivity implements NavigationView.OnNa
         find_way_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(FindingWay.this, Guide.class);
-                intent.putExtra(startPoint_latitude,startPoint_longitude);
-                intent.putExtra(destPoint_latitude,destPoint_longitude);
-                startActivity(intent);
+                Intent in = new Intent(FindingWay.this, Guide.class);
+                in.putExtra("start1",startPoint_latitude);
+                in.putExtra("start2",startPoint_longitude);
+                in.putExtra("dest1",destPoint_latitude);
+                in.putExtra("dest2",destPoint_longitude);
+                startActivity(in);
                 mapViewContainer.removeAllViews();
                 /*String getStartingPoint = starting_point_textView.getText().toString();
                 String getDestPoint = dest_point_textView.getText().toString();

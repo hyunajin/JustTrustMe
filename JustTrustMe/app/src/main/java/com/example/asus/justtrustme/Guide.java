@@ -47,12 +47,11 @@ public class Guide extends AppCompatActivity implements NavigationView.OnNavigat
     DrawerLayout drawer;
     Toolbar toolbar;
     NavigationView navigationView;
-    static String startPoint_latitude, startPoint_longitude, destPoint_latitude, destPoint_longitude;
     private MediaPlayer mp;
     Button Siren;
-
     private Button mImageButtonFlash;
     private boolean mFlashOn;
+    static String start3,start4,dest3,dest4;
 
     private MapView mMapView;
     LinearLayout mapView_linear;
@@ -63,9 +62,21 @@ public class Guide extends AppCompatActivity implements NavigationView.OnNavigat
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         boolean inrow = false, inWGS84_LOGT = false, inWGS84_LAT = false;
         String WGS84_LOGT = null, WGS84_LAT = null;
+
+
+        Intent in = getIntent();
+        start3 = in.getStringExtra("start1");
+        start4 = in.getStringExtra("start2");
+        dest3 = in.getStringExtra("dest1");
+        dest4 = in.getStringExtra("dest2");
+        Double s3 = Double.parseDouble(start3);
+        Double s4 = Double.parseDouble(start4);
+        Double d3 = Double.parseDouble(dest3);
+        Double d4 = Double.parseDouble(dest4);
+
+
         setContentView(R.layout.activity_guide);
         StrictMode.enableDefaults();
         MapView mMapView = new MapView(this);
@@ -78,9 +89,16 @@ public class Guide extends AppCompatActivity implements NavigationView.OnNavigat
         ViewGroup mapViewContainer = findViewById(R.id.map_view);
         mapViewContainer.addView(mMapView);
 
+        MapPolyline polyline1 = new MapPolyline();
+        polyline1.setTag(1000);
+        polyline1.setLineColor(Color.argb(128, 255, 0, 0));
+        polyline1.addPoint(MapPoint.mapPointWithGeoCoord(s3,s4));
+        polyline1.addPoint(MapPoint.mapPointWithGeoCoord(d3,d4));
+
+        mMapView.addPolyline(polyline1);
 
         try {
-            URL url = new URL("https://openapi.gg.go.kr/CCTV?" + "Key=e53374de6b754ee79694f43f2af5b965" + "&pIndex=&pSize=50"); //검색 URL부분
+            URL url = new URL("https://openapi.gg.go.kr/CCTV?" + "Key=e53374de6b754ee79694f43f2af5b965" + "&pIndex=&pSize=20"); //검색 URL부분
 
             XmlPullParserFactory parserCreator = XmlPullParserFactory.newInstance();
             XmlPullParser parser = parserCreator.newPullParser();
@@ -135,8 +153,8 @@ public class Guide extends AppCompatActivity implements NavigationView.OnNavigat
             mMapView.addPOIItem(customMarker);
 
 
+
             MapPolyline polyline = new MapPolyline();
-            MapPolyline polyline1 = new MapPolyline();
             polyline.setTag(1000);
             polyline.setLineColor(Color.argb(128, 204, 255, 255));
             for (int j = 0; j < sublat.size(); j++) {
@@ -145,9 +163,11 @@ public class Guide extends AppCompatActivity implements NavigationView.OnNavigat
                 polyline.addPoint(MapPoint.mapPointWithGeoCoord(x, y));
                 mMapView.addPolyline(polyline);
                 mMapView.fitMapViewAreaToShowPolyline(polyline);
-
             }
+
         }
+
+
 
         mp =  MediaPlayer.create(Guide.this, R.raw.siren);
         mp.setLooping( true );
