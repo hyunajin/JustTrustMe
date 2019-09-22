@@ -17,10 +17,18 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 public class ButtonActivity extends AppCompatActivity {
 
     String phoneNumber ="01042256634";
-    String smsBody ="/data.txt";
+    String smsBody ="문자전송";
+    String str ;
 
     ImageButton sms;
     private ImageButton mImageButtonFlash;
@@ -34,6 +42,22 @@ public class ButtonActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_button);
 
+       StringBuffer buffer = new StringBuffer();
+
+       try{
+           BufferedReader br = new BufferedReader(new FileReader(getFilesDir()+"data.txt"));
+           smsBody ="";
+
+           while((str = br.readLine()) != null)
+               smsBody += str+"\n";
+           br.close();
+
+       } catch (FileNotFoundException e) {
+           e.printStackTrace();
+       } catch (IOException e) {
+           e.printStackTrace();
+       }
+
         sms = findViewById(R.id.smsButton);
 
         sms.setOnClickListener(new View.OnClickListener() {
@@ -45,7 +69,7 @@ public class ButtonActivity extends AppCompatActivity {
 
                 smsIntent.putExtra("address", phoneNumber);
 
-                smsIntent.putExtra("/data.txt", smsBody);
+                smsIntent.putExtra("str", smsBody);
 
 
                 startActivity(smsIntent);

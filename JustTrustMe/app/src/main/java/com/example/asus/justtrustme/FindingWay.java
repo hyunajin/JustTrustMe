@@ -30,6 +30,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.kakao.usermgmt.UserManagement;
+import com.kakao.usermgmt.callback.LogoutResponseCallback;
 
 import net.daum.mf.map.api.MapLayout;
 import net.daum.mf.map.api.MapPOIItem;
@@ -225,8 +227,15 @@ public class FindingWay extends AppCompatActivity implements NavigationView.OnNa
                 startActivity(intent1);
                 break;
             case R.id.logout:
-                Intent intent2 = new Intent(FindingWay.this, Logout.class);
-                startActivity(intent2);
+                UserManagement.requestLogout(new LogoutResponseCallback() {
+                    @Override
+                    public void onCompleteLogout() {
+                        Intent intent2 = new Intent(FindingWay.this, Home.class);
+                        startActivity(intent2);
+                        FirebaseAuth.getInstance().signOut();
+                    }
+                });
+
                 break;
         }
         return super.onOptionsItemSelected(item);

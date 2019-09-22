@@ -17,6 +17,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.kakao.usermgmt.UserManagement;
+
 public class OtherSettings extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,AdapterView.OnItemClickListener {
     DrawerLayout drawer;
     Toolbar toolbar;
@@ -60,6 +62,7 @@ public class OtherSettings extends AppCompatActivity implements NavigationView.O
         }
         return super.onOptionsItemSelected(item);
     }
+
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {

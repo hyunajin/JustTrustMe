@@ -9,9 +9,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -40,12 +42,11 @@ public class SaveActivity extends AppCompatActivity {
                 }
 
                 try{
-                    FileOutputStream fos = openFileOutput("data.txt", Context.MODE_APPEND);
+                    BufferedWriter bw = new BufferedWriter(new FileWriter(getFilesDir()+"data.txt", true));
+                    bw.write(data);
+                    bw.close();
 
-                    PrintWriter writer = new PrintWriter(fos);
-                    writer.println(data.getBytes());
-                    writer.close();
-                }catch (FileNotFoundException e){
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
                 Intent intent = new Intent(SaveActivity.this, OtherSettings.class);
